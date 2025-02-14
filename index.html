@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 网站标题 -->
+    <title>DIDI - AI创意策划师</title>
+    <!-- Bootstrap -->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font-Awesome -->
+    <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Lightbox -->
+    <link href="assets/lightbox/css/lightbox.css" rel="stylesheet">
+    <!-- Text Rotator-->
+    <link href="assets/textrotator/simpletextrotator.css" rel="stylesheet">
+    <!-- FlexSlider -->
+    <link href="assets/flexslider/flexslider.css" rel="stylesheet">
+    <!-- 主题样式 -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- 动画 -->
+    <link href="css/animate.css" rel="stylesheet">
+    <!-- 自定义图标 -->
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon" /> 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="assets/html5shiv/html5shiv.js"></script>
+    <script src="assets/respond/respond.min.js"></script>
+    <![endif]-->
+    <style>
+      #wechat-qr {
+        position: absolute;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        display: none;
+      }
+      body {
+        padding-top: 0;
+        transition: padding-top 0.3s ease;
+      }
+      .nav-open {
+        padding-top: 60px;
+      }
+      .menu-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+      }
+      .nav-open .menu-wrap {
+        transform: translateY(0);
+      }
+      #hero {
+        height: 100vh;
+      }
+      .menu-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+      }
+      .portfolio-item {
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+        margin-bottom: 30px; /* 添加一些底部间距 */
+      }
+      .portfolio-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .blog-item {
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative; /* 添加相对定位 */
+        border: 5px solid white; /* 添加白色边框 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 添加阴影效果 */
+      }
+      .blog-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 保持图片比例，必要时裁剪 */
+      }
+      #blog {
+        background-image: url('img/blog-background.jpg'); /* 替换为您的背景图片路径 */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 100px 0; /* 调整内边距以适应背景图片 */
+      }
+      #blog .container {
+        background-color: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
+        padding: 30px;
+        border-radius: 10px;
+      }
+      #blog h1.arrow {
+        color: #333; /* 调整标题颜色以适应新背景 */
+      }
+      #blog .blog-item {
+        background-color: #fff; /* 博客项目的白色背景 */
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      .blog-item {
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative;
+        border: 5px solid white; /* 添加白色边框 */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 添加阴影效果 */
+      }
+
+      .blog-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 保持图片比例，必要时裁剪 */
+      }
+
+      .blog-item:hover,
+      .blog-item:hover img,
+      .blog-item .overlay-effect:hover,
+      .overlay-effect:hover .img {
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .portfolio-item {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .portfolio-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .portfolio-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .portfolio-description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .portfolio-item:hover .portfolio-description {
+        transform: translateY(0);
+      }
+
+      .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.grid-item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.grid-item:hover {
+    transform: scale(1.05);
+}
+
+.grid-item img {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+}
+
+.read-more {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: white;
+    border: 1px solid white;
+    background: transparent;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.read-more:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+}
+
+.read-more:not(:hover) {
+    color: white !important;
+}
+    </style>
+  </head>
+    <body id="top">
+
+      <!-- ****************************** 预加载器 ************************** -->
+      <div id="preloader"></div>
+
+
+      <!-- ==========================
+        头部部分 
+        =========================== -->
+        <header id="home">
+        <!-- 创意菜单 -->
+            <div class="menu-wrap">
+        <nav class="menu">
+            <!-- 菜单链接 -->
+          <div class="icon-list">
+            <a href="index.html#home"><i class="fa fa-fw fa-home"></i><span>首页</span></a>
+            <a href="index.html#about"><i class="fa fa-fw fa-quote-left"></i><span>关于</span></a>
+            <a href="index.html#service"><i class="fa fa-fw fa-globe"></i><span>案例</span></a>
+            <a href="index.html#portfolio"><i class="fa fa-fw fa-picture-o"></i><span>作品集</span></a>
+            <a href="index.html#blog"><i class="fa fa-fw fa-rss"></i><span>博客</span></a>
+            <a href="index.html#contact"><i class="fa fa-fw fa-envelope-o"></i><span>联系</span></a>
+          </div>
+        </nav>
+          </div>
+          <button class="menu-button" id="open-button"></button><!-- 菜单按钮 -->
+      <!-- 头部图片 -->
+          <section class="hero" id="hero">
+            <div class="container">
+        <!-- 滑块按钮 (不要编辑!)-->
+              <div class="row">
+                <div class="col-md-12 text-right navicon">
+                  <a id="nav-toggle" class="nav_slide_button" href="index.html#"><span></span></a>
+                </div>
+              </div>
+        <!-- 头部标题 -->
+              <div class="row">
+                <div class="col-md-8 col-md-offset-1 inner">
+                  <h1 class="animated fadeInDown">
+                    HI  <span style="color:#E04343;">I'M</span><br/>
+                    <span>D<span style="color:#FFE800">I</span> D<span style="color:#FFE800">I</span>
+                  </h1><!-- 标题 -->
+                  <h3 class="animated fadeInUp delay-05s"><span class="rotate">AI创意视觉,AI文案策划,AI营销优化</span></h3><!-- 文字轮播 -->
+                </div>
+              </div>
+        <!-- 了解更多按钮 -->
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <a href="index.html#about" class="scrollto wow fadeInUp delay-5s ">
+                <p>查看更多</p>
+                <p class="scrollto--arrow"><img src="img/scroll-down.png" alt="向下滚动箭头"></p>
+            </a>
+                </div>
+              </div>
+            </div>
+          </section>
+      <!-- 头部图片结束 -->
+        </header>
+    <!-- ==========================
+        头部部分结束  
+        =========================== -->
+    
+    
+    
+    
+    <!-- ==========================
+        关于部分  
+        =========================== -->
+        <section class="intro text-center section-padding color-bg" id="about">
+          <div class="container">
+            <!-- 欢迎文字 -->
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 wp1">
+                <h1 class="arrow">关于<span>我</span></h1><!-- 标题 -->
+              </div>
+            </div>
+            <!-- 添加可点击的圆形个人照片 -->
+            <div class="row">
+              <div class="col-md-4 col-md-offset-4">
+                <div class="profile-picture">
+                  <a href="https://your-profile-link.com" target="_blank">
+                    <img src="img/profile-picture.jpg" alt="DIDI的个人照片" class="img-circle">
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- 关于/欢迎文字 -->
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 wp1">
+                <p>我是DIDI,一名专业的AI创意策划师。我擅长运用AI技术进行创意表现,优化营销全流程,以及策划富有意的文案。我致于帮客户实现AI赋能的营创新,为品牌注入新的活力和创意。无论是视觉设计、营策略还是内容创作,都能运用AI的力量,为您的项目带来独特有效的解决方案。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
+<!-- ==========================
+        案例部分 
+        =========================== -->
+        <section class="features text-center section-padding" id="service">
+          <div class="container">
+        <!-- 标题 -->
+            <div class="row">
+              <div class="col-md-12">
+                <h1 class="arrow">为客户提供</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+          <div class="services">
+          <!-- 案例框 1 -->
+                  <div class="col-md-4 wp2 item">
+                    <div class="icon">
+                      <i class="fa fa-paint-brush"></i><!-- 图标 -->
+                    </div>
+                    <h2>AI创意表现</h2><!-- 标题 -->
+                    <p>运用先进的AI技术,为您的牌打造独特而吸引人的视觉效果。从logo设计到广告创意,我们将AI的创造力与洞察力完美结合。</p><!-- 描述 -->
+                  </div>
+          <!-- 案例框 2 -->
+                  <div class="col-md-4 wp2 item delay-05s">
+                    <div class="icon">
+                      <i class="fa fa-line-chart"></i><!-- 图标 -->
+                    </div>
+                    <h2>AI营销优化</h2><!-- 标题 -->
+                    <p>借助AI分析工具,优化您的整个营销流程。从受众定位到渠道选择,再到效果评估,我们用数据驱动每一个决策,确保您的营销投资获得最大回报。</p><!-- 描述 -->
+                  </div>
+          <!-- 案例框 3 -->
+                  <div class="col-md-4 wp2 item delay-1s">
+                    <div class="icon">
+                      <i class="fa fa-pencil"></i><!-- 图标 -->
+                    </div>
+                    <h2>AI文案策划</h2><!-- 标题 -->
+                    <p>借助AI语言模型的力量,为您创作引人入胜的文案。无论是社交媒体帖子、广告语还是品牌故事,我们都能确保每一个字都富有感染力。</p><!-- 描述 -->
+                  </div>
+          </div>
+                  <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
+
+        <div class="grid-container">
+          <div class="grid-item">
+              <a href="https://your-link-1.com" target="_blank">
+                <img src="path_to_ai_coding_image1.jpg" alt="AI Coding">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+          <div class="grid-item">
+              <a href="https://your-link-2.com" target="_blank">
+                <img src="path_to_ai_painting_image2.jpg" alt="AI Painting">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+          <div class="grid-item">
+              <a href="https://your-link-3.com" target="_blank">
+                <img src="path_to_ai_music_image3.jpg" alt="AI Music">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+          <div class="grid-item">
+              <a href="https://your-link-4.com" target="_blank">
+                <img src="path_to_ai_design_image4.jpg" alt="AI Design">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+          <div class="grid-item">
+              <a href="https://your-link-5.com" target="_blank">
+                <img src="path_to_ai_writing_image5.jpg" alt="AI Writing">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+          <div class="grid-item">
+              <a href="https://your-link-6.com" target="_blank">
+                <img src="path_to_ai_video_image6.jpg" alt="AI Video">
+              </a>
+              <div class="read-more">了解更多</div>
+          </div>
+      </div>
+    <!-- ==========================
+        关部分结束
+        =========================== -->    
+
+    
+    
+    
+    
+    <!-- ==========================
+        作品集部分
+    =========================== -->
+        <section class="swag text-center" id="portfolio">
+          <div class="container">
+        <!-- 标 -->
+            <div class="row">
+              <h1 class="arrow">
+                最近的 <span>作品</span>
+              </h1>
+            </div>
+          </div>
+        </section>
+
+        <div class="container">
+          <div class="row row-offset-0">
+  				 
+          <!-- 作品集项目 1 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-1.com" target="_blank">
+                          <img src="img/portfolio/portfolio-01-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>皮克斯卡通头像</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  	
+  	    <!-- 作品集项目 2 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-2.com" target="_blank">
+                          <img src="img/portfolio/portfolio-02-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>泡泡马特盲盒IP</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 3 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-3.com" target="_blank">
+                          <img src="img/portfolio/portfolio-03-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>盲盒IP延展手机壳</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 4 -->
+          <div class="col-md-3 col-sm-6 ">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-4.com" target="_blank">
+                          <img src="img/portfolio/portfolio-04-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>设计私人定制PIN</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 品集项目结束 -->
+  	             
+          <!-- 作品集项目 5 -->
+          <div class="col-md-3 col-sm-6 ">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-5.com" target="_blank">
+                          <img src="img/portfolio/portfolio-05-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>极致美学吸睛艺术</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 品集项目结束 -->
+  	
+  	    <!-- 作品集项目 6 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-6.com" target="_blank">
+                          <img src="img/portfolio/portfolio-06-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>毛毡COOKIE</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 7 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-7.com" target="_blank">
+                          <img src="img/portfolio/portfolio-07-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>定制动物/宠物盲盒IP</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 8 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-8.com" target="_blank">
+                          <img src="img/portfolio/portfolio-08-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>法式绘本艺术呈现</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 9 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-9.com" target="_blank">
+                          <img src="img/portfolio/portfolio-09-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>母亲节创意</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 10 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-10.com" target="_blank">
+                          <img src="img/portfolio/portfolio-10-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>黑悟空LORA延展</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 11 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-11.com" target="_blank">
+                          <img src="img/portfolio/portfolio-11-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>超写实美女写真</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结 -->
+  					
+  		<!-- 作品集项目 12 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-12.com" target="_blank">
+                          <img src="img/portfolio/portfolio-12-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>毛毡画作</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 13 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://1drv.ms/v/c/5c8617c9688d180b/EQuxLWsxAu9Omse2EfX-aK4BTuWblQuC78JgBXdysydTrA?e=jIHOIJ" target="_blank">
+                          <img src="img/portfolio/portfolio-13-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>宠物定制表情包</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 14 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://1drv.ms/v/c/5c8617c9688d180b/EaK5LEqJtHpFtzP5uKyYEEgBd2lfB789z7gFvMevT30HfQ?e=8FCJw2" target="_blank">
+                          <img src="img/portfolio/portfolio-14-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>AI音乐生成</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 15 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://guoji-biaozhun-renzheng-5hj3zt7.gamma.site" target="_blank">
+                          <img src="img/portfolio/portfolio-15-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>网页设计</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+  					
+  		<!-- 作品集项目 16 -->
+          <div class="col-md-3 col-sm-6">
+              <div class="overlay-effect effects clearfix">
+                  <div class="portfolio-item">
+                      <a href="https://your-link-16.com" target="_blank">
+                          <img src="img/portfolio/portfolio-16-thumbnail.jpg" alt="作品集项目">
+                          <div class="portfolio-description">
+                            <p>COZE营销报奖AGENT</p>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+  	    <!-- 作品集项目结束 -->
+        </div><!--/row-->
+      </div><!--/.container-->
+    <!-- ==========================
+        作品集部分结束
+        =========================== -->
+    
+
+
+    
+    <!-- ==========================
+        自定义间隔
+        =========================== -->
+    <div class="spacer-cta text-center">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <a href="index.html#contact" class="outline-btn">想要看更多</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- ==========================
+        自定义间隔结束
+        =========================== -->
+    
+    
+
+    <!-- ==========================
+        博客部分 
+        =========================== -->
+    <section class="text-center section-padding" id="blog">
+      <div class="container">
+        <!-- 标题 -->
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="arrow">DI<span>课堂</span></h1>
+          </div>
+        </div><br><br>
+
+        <!-- 博客滑块 -->
+        <div class="row">
+          <div id="blogSlider">
+            <ul class="slides">
+              <li>
+                <!-- 博客条目 1-3 -->
+                <div class="col-md-4 wp4">
+                  <div class="blog-item">
+                    <a href="https://your-link-1.com" target="_blank">
+                      <img src="img/blog1.jpg" alt="博客项目1">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-4 wp4 delay-05s">
+                  <div class="blog-item">
+                    <a href="https://your-link-2.com" target="_blank">
+                      <img src="img/blog2.jpg" alt="博客项目2">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-4 wp4 delay-1s">
+                  <div class="blog-item">
+                    <a href="https://your-link-3.com" target="_blank">
+                      <img src="img/blog3.jpg" alt="博客项目3">
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <!-- 博客条目 4-6 -->  
+                <div class="col-md-4 wp4">
+                  <div class="blog-item">
+                    <a href="https://your-link-4.com" target="_blank">
+                      <img src="img/blog4.jpg" alt="博客项目4">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-4 wp4 delay-05s">
+                  <div class="blog-item">
+                    <a href="https://your-link-5.com" target="_blank">
+                      <img src="img/blog5.jpg" alt="博客项目5">
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-4 wp4 delay-1s">
+                  <div class="blog-item">
+                    <a href="https://your-link-6.com" target="_blank">
+                      <img src="img/blog6.jpg" alt="博客项目6">
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ==========================
+        博客部分结束
+        =========================== -->
+    
+        
+    
+    <!-- ==========================
+        联系部分
+        =========================== -->
+        <section class="text-center section-padding contact-wrap" id="contact">
+      <!-- 回到顶部按钮 -->
+          <a href="index.html#top" class="up-btn"><i class="fa fa-chevron-up"></i></a>
+          <div class="container">
+        <!-- 标题 -->
+            <div class="row">
+              <div class="col-md-12">
+                <h1 class="arrow">联系<span>我</span></h1>
+              </div>
+            </div>
+            <div class="row contact-details">
+        <!-- 微信框 -->
+              <div class="col-md-4" style="position: relative;">
+                <div class="dark-box box-hover" id="wechat-box">
+                  <h2><i class="fa fa-weixin"></i><span>微信</span></h2>
+                  <p>JUST_D-HOUHOU</p>
+                </div>
+                <div id="wechat-qr" style="display: none; position: absolute; background: white; padding: 10px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); z-index: 1000; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 10px;">
+                  <img src="img/wechat-qr.jpg" alt="微信二维码" style="width: 200px; height: 200px;">
+                </div>
+              </div>
+        <!-- QQ号码框 -->
+              <div class="col-md-4">
+                <div class="dark-box box-hover">
+                  <h2><i class="fa fa-qq"></i><span>QQ</span></h2>
+                  <p>3920843223</p>
+                </div>
+              </div>
+        <!-- 电子邮件框 -->
+              <div class="col-md-4">
+                <div class="dark-box box-hover">
+                  <h2><i class="fa fa-paper-plane"></i><span>电子邮件</span></h2>
+                  <p><a href="mailto:ADAI_ADAI@FOXMAIL.COM">ADAI_ADAI@FOXMAIL.COM</a></p>
+                </div>
+              </div>
+            </div>
+        <br>
+        <!-- 社交按钮 - 使用font-awesome, 粘贴您想要的内容 -->
+            <div class="row">
+              <div class="col-md-12">
+                <ul class="social-buttons">
+                  <li style="position: relative;">
+                    <a href="javascript:void(0);" class="social-btn" id="wechat-public-btn">
+                      <img src="img/wechat-public-icon.png" alt="微信公众号" style="width: 20px; height: 20px;">
+                    </a>
+                    <div id="wechat-public-qr" style="display: none; position: absolute; background: white; padding: 10px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 10px; z-index: 1000;">
+                      <img src="img/wechat-public-qr.jpg" alt="微信公众号二维码" style="width: 200px; height: 200px;">
+                    </div>
+                  </li>
+                  <li><a href="https://www.xiaohongshu.com/user/profile/63ad067a0000000026010209" target="_blank" class="social-btn"><img src="img/xiaohongshu-icon.png" alt="小红书" style="width: 20px; height: 20px;"></a></li>
+                  <li><a href="https://weibo.com/u/7938201759" target="_blank" class="social-btn"><img src="img/weibo-icon.png" alt="微博" style="width: 20px; height: 20px;"></a></li>
+                  <li><a href="https://www.douyin.com/user/self?from_tab_name=main&showTab=like" target="_blank" class="social-btn"><img src="img/douyin-icon.png" alt="抖音" style="width: 20px; height: 20px;"></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+    <!-- ==========================
+        联系部分结束
+        =========================== -->
+    
+    
+    
+    
+    <!-- ==========================
+        页脚部分
+        =========================== -->
+        <footer>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <p>&copy; 2024 ADAI STUDIO. 版权所有。</p>
+              </div>
+            </div>
+          </div>
+        </footer>
+    <!-- ==========================
+        页脚部分结束
+        =========================== -->    
+    
+    
+    <!-- jQuery -->
+    <script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+    <!-- SmoothScroll -->           
+    <script type="text/javascript" src="assets/smoothscroll/smoothscroll.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <!-- Waypoints -->
+  <script src="js/waypoints.min.js"></script>
+    <!-- classie.js -->
+  <script src="js/classie.js"></script>
+    <!-- FlexSlider -->
+    <script src="assets/flexslider/jquery.flexslider.js"></script>
+  <!-- Modernizr -->
+    <script src="js/modernizr.js"></script>
+  <!-- Text Rotator -->
+  <script src="assets/textrotator/jquery.simple-text-rotator.js"></script>
+  <!-- Lightbox.js -->
+    <script src="assets/lightbox/js/lightbox.min.js"></script>
+  <!-- 主题JavaScript核心 -->
+  <script src="js/main.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- 文字轮播设置 -->
+    <script type="text/javascript">
+    $(".rotate").textrotator({
+      animation: "fade", // 你可以选择单词轮换时的动画方式。选项有dissolve(默认)、fade、flip、flipUp、flipCube、flipCubeUp和spin。
+      separator: ",", // 如果你不想用逗号作为分隔符,你可以使用这个字段自己定义一个新的分隔符(|, &, * 等)。
+      speed: 2000 // 下一个单词显示前的毫秒数。
+    });
+    </script>
+  
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // 微信联系方式二维码显示逻辑
+        const wechatBox = document.getElementById('wechat-box');
+        const wechatQR = document.getElementById('wechat-qr');
+        
+        wechatBox.addEventListener('click', function(e) {
+          e.stopPropagation();
+          wechatQR.style.display = wechatQR.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        // 公众号二维码显示逻辑
+        const wechatPublicBtn = document.getElementById('wechat-public-btn');
+        const wechatPublicQR = document.getElementById('wechat-public-qr');
+
+        wechatPublicBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          wechatPublicQR.style.display = wechatPublicQR.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // 点击页面其他地方关闭所有二维码
+        document.addEventListener('click', function(e) {
+          if (!wechatBox.contains(e.target) && !wechatQR.contains(e.target)) {
+            wechatQR.style.display = 'none';
+          }
+          if (!wechatPublicBtn.contains(e.target) && !wechatPublicQR.contains(e.target)) {
+            wechatPublicQR.style.display = 'none';
+          }
+        });
+        
+        // 控制台日志，用于调试
+        console.log('Event listeners added successfully');
+      });
+    </script>
+    </script>
+  
+    </body>
+</html>
